@@ -11,11 +11,13 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.MoveMotorCommand;
 import frc.robot.commands.PneumaticsExtendPistonCommand;
 import frc.robot.commands.PneumaticsRetractPistonCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -42,7 +44,9 @@ public class RobotContainer {
   PneumaticsExtendPistonCommand pneumaticsExtendPistonCommand = new PneumaticsExtendPistonCommand(pneumaticsSubsystem);
   PneumaticsRetractPistonCommand pneumaticsRetractPistonCommand = new PneumaticsRetractPistonCommand(pneumaticsSubsystem);
 
-
+  //Intake Subsystem and Commands
+  IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem);
 
   //robot subsystem variable to be used when it needs to be triggered:
   private final DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
@@ -50,7 +54,6 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
 
 
   /**
@@ -68,6 +71,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    //TODO: Add button mappings to the Constants file.
 
     //Map buttons 3 and 4 on the controller to extend and retract the piston, respectively:
     final JoystickButton extendPistonButton = new JoystickButton(controller, 5);
@@ -76,6 +80,10 @@ public class RobotContainer {
     //Define each button's behaviour:
     extendPistonButton.whenHeld(pneumaticsExtendPistonCommand);
     retractPistonButton.whenHeld(pneumaticsRetractPistonCommand);
+
+    //---------------------------------------------
+    final JoystickButton activateIntakeButton = new JoystickButton(controller, 4);
+    activateIntakeButton.whenHeld(intakeCommand);
 
     //---------------------------------------------
     //selecting the gamepad's L1 button
